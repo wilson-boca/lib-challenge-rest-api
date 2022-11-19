@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User, Group
 from store.models import Sell, Client, Seller, Product
-from rest_framework import viewsets
-from rest_framework.views import APIView
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, SalesSerializer, ClientSerializer, SellerSerializer, SellSerializer, ProductSerializer
+
+from .services import create_products_for_sell
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -45,6 +46,11 @@ class SellViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get', 'post', 'put', 'delete']
 
+    def create(self, request):
+        result = create_products_for_sell(request.data)
+        serializer = SellSerializer(result)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -73,12 +79,3 @@ class SalesViewSet(viewsets.ModelViewSet):
     serializer_class = SalesSerializer
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get']
-
-
-class Sales(APIView):
-
-    def get(self, request):
-        print(request)
-        queryset = Sell.objects.all()
-        serializer_class = SalesSerializer(queryset)
-        return Response(serializer_class.data)

@@ -22,18 +22,19 @@ class SellerSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Product
-        fields = ['code', 'description', 'price', 'commission']
+        fields = ['id', 'code', 'description', 'price', 'commission']
 
 
-class SellSerializer(serializers.HyperlinkedModelSerializer):
+class SellSerializer(serializers.ModelSerializer):
+
+    product = ProductSerializer(many=True, read_only=False)
+
     class Meta:
         model = Sell
-        fields = ['date', 'client', 'seller', 'product']
-
-    # def to_internal_value(self, data):
-    #     print(data)
+        fields = ['invoice', 'date_fmt', 'client', 'seller', 'product']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,7 +43,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name']
 
 
-class ItemsSerializer(serializers.HyperlinkedModelSerializer):
+class ItemsSerializer(serializers.ModelSerializer):
 
     product_service = serializers.SerializerMethodField()
 

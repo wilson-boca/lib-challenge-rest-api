@@ -2,9 +2,11 @@ from django.utils import timezone
 
 from django.db import models
 
+from django.db.models.signals import post_save
+
 
 class Product(models.Model):
-    code = models.CharField(max_length=13)
+    code = models.CharField(max_length=13, unique=True)
     description = models.CharField(max_length=250)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     commission = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))), unique=True)
@@ -88,6 +90,13 @@ class Sell(models.Model):
     def items(self):
         items = Item.objects.filter(sell_id=self.id).select_related("product")
         return items
+
+    # @classmethod
+    # def post_create(cls, sender, instance, created, *args, **kwargs):
+    #     print(instance)
+
+
+# post_save.connect(Sell.post_create, sender=Sell)
 
 
 class Item(models.Model):
