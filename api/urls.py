@@ -16,18 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from .views import GroupViewSet, UserViewSet, ItemsViewSet, SellsViewSet
+from .views import SalesViewSet, ClientViewSet, SellerViewSet, SellViewSet, ProductViewSet, Sales
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
-router.register(r'items', ItemsViewSet)
-router.register(r'sells', SellsViewSet)
+router.register(r'product', ProductViewSet)
+router.register(r'client', ClientViewSet)
+router.register(r'seller', SellerViewSet)
+router.register(r'sell', SellViewSet)
+router.register(r'sales', SalesViewSet, basename='sales')
 
 # Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
+# Additionall`y, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

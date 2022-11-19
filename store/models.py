@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 
 
@@ -30,13 +32,20 @@ class Seller(models.Model):
 
 
 class Sell(models.Model):
-    fiscal_code = models.CharField(max_length=8)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey("Client", on_delete=models.CASCADE, related_name="client")
     seller = models.ForeignKey("Seller", on_delete=models.CASCADE, related_name="seller")
+    product = models.ManyToManyField(
+        Product,
+        through='Item'
+    )
 
     def __str__(self):
-        return self.fiscal_code
+        return str(self.id).zfill(8)
+
+    @property
+    def invoice(self):
+        return str(self.id).zfill(8)
 
     @property
     def client_name(self):
@@ -84,7 +93,12 @@ class Sell(models.Model):
 class Item(models.Model):
     sell = models.ForeignKey("Sell", on_delete=models.CASCADE, related_name="sell")
     product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name="product")
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=('sell', 'product'), name='once_per_product_sale')
+        ]
 
     @property
     def total(self):
