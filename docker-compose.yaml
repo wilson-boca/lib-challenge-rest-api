@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  web:
+    environment:
+      - DB_HOST=postgres_cnt
+    build: ./
+    command: >
+      sh -c "python manage.py makemigrations  --noinput
+      && python manage.py migrate  --noinput
+      && python manage.py shell < create_su.py
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/usr/src/app/
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+      - pgadmin
+    restart: on-failure
+    networks:
+      - postgres
+  postgres:
+    container_name: postgres_cnt
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin321
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_cnt
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@provider.com
+      PGADMIN_DEFAULT_PASSWORD: admin321
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
