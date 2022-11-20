@@ -5,12 +5,20 @@ Django REST API - Library Challenge
 - Python version: 3.11
 - Django REST framework version: 3.11.0
 
-
 ## Super User Login
 - The credentials for the admin login are:
 ```
 user: admin
 password: admin321
+```
+
+## Testing
+
+To run the project on a Docker container execute the command below on the root folder.
+It will load everything that the application needs(PostgreSQL, PGAdmin)
+```
+$export USE_TEST_DB=true
+$pytest --cov --cov-report=html
 ```
 
 ## Running

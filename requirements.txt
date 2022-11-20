@@ -3,3 +3,7 @@ djangorestframework
 markdown       # Markdown support for the browsable API.
 django-filter
 psycopg2-binary
+pytest-django
+pytest-cov
+pytest-env
+model_bakery

@@ -46,7 +46,9 @@ class SellViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get', 'post', 'put', 'delete']
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
+        if 'product' not in request.data:
+            return super().create(request, *args, **kwargs)
         result = create_products_for_sell(request.data)
         serializer = SellSerializer(result)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

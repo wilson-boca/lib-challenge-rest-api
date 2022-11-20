@@ -8,4 +8,7 @@ migrations/
 unit.xml
 .env
 venv
+htmlcov
+.coverage
+.pytest_cache
 

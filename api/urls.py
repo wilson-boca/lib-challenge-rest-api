@@ -23,7 +23,7 @@ router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet)
 router.register(r'client', ClientViewSet)
 router.register(r'seller', SellerViewSet)
-router.register(r'sell', SellViewSet)
+router.register(r'sell', SellViewSet, basename='sell')
 router.register(r'sales', SalesViewSet, basename='sales')
 
 # Wire up our API using automatic URL routing.

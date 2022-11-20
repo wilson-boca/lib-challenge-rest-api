@@ -30,11 +30,9 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
 class SellSerializer(serializers.ModelSerializer):
 
-    product = ProductSerializer(many=True, read_only=False)
-
     class Meta:
         model = Sell
-        fields = ['invoice', 'date_fmt', 'client', 'seller', 'product']
+        fields = ['invoice', 'date_fmt', 'client', 'seller']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
