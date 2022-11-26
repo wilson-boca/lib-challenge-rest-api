@@ -82,4 +82,4 @@ class SalesSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Sell
-        fields = ['invoice', 'client_name', 'seller_name', 'date_fmt', 'total', 'items', 'total_items', 'total_commission']
+        fields = ['id', 'invoice', 'client_name', 'seller_name', 'date_fmt', 'total', 'items', 'total_items', 'total_commission']

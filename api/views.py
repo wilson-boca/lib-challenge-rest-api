@@ -80,7 +80,7 @@ class SalesViewSet(viewsets.ModelViewSet):
     """
     queryset = Sell.objects.all()
     serializer_class = SalesSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get']
 
 

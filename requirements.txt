@@ -7,3 +7,4 @@ pytest-django
 pytest-cov
 pytest-env
 model_bakery
+ django-cors-headers
