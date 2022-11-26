@@ -6,6 +6,7 @@ from .serializers import UserSerializer, GroupSerializer, SalesSerializer, Clien
 from .services import create_products_for_sell, group_by
 from rest_framework.response import Response
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -85,7 +86,8 @@ class SalesViewSet(viewsets.ModelViewSet):
 
 class CommissionViewSet(viewsets.ViewSet):
     def list(self, request):
-        start_date = request.query_params.get("start-date")
-        end_date = request.query_params.get("end-date")
-        result = group_by(start_date, end_date)
-        return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
+        start_date = request.query_params.get('start-date', '2022-01-01')
+        end_date = request.query_params.get('end-date', datetime.today().strftime('%Y-%m-%d'))
+        end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
+        result, total = group_by(start_date, end_date)
+        return JsonResponse({'data': result, "total": total}, safe=False, status=status.HTTP_200_OK)

@@ -11,8 +11,23 @@ def new_sell(db):
 
 
 @pytest.fixture
+def new_seller(db):
+   return baker.make('store.Seller')
+
+
+@pytest.fixture
 def new_client(db):
     return baker.make('store.Client')
+
+
+@pytest.fixture
+def new_product(db):
+    return baker.make('store.Product')
+
+
+@pytest.fixture
+def new_item(db):
+    return baker.make('store.Item')
 
 
 @pytest.fixture
@@ -42,4 +57,32 @@ def sell_put(db):
     return {
         "client": 2,
         "seller": 1
+    }
+
+
+@pytest.fixture
+def seller_put(db):
+    return {
+        "name": "Tester Name",
+        "email": "test@provider.com",
+        "phone": "11222333445"
+    }
+
+
+@pytest.fixture
+def client_put(db):
+    return {
+        "name": "New Client Name",
+        "email": "newc@provider.com",
+        "phone": "19777777777"
+    }
+
+
+@pytest.fixture
+def product_put(db):
+    return {
+        "code": "00002",
+        "description": "New Product Name",
+        "price": 5,
+        "commission": 2
     }

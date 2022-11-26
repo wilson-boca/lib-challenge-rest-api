@@ -16,6 +16,7 @@ def create_products_for_sell(products: list[dict]) -> dict:
 
 def group_by(start_date, end_date):
     result = []
+    general_total = 0
     for seller in Seller.objects.all().order_by('id'):
         total_comission = 0
         total_items = 0
@@ -29,4 +30,5 @@ def group_by(start_date, end_date):
             "total_commission": total_comission
         }
         result.append(result_dict)
-    return result
+        general_total += total_comission
+    return result, general_total
