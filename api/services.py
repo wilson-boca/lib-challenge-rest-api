@@ -13,3 +13,20 @@ def create_products_for_sell(products: list[dict]) -> dict:
 
     return sell
 
+
+def group_by(start_date, end_date):
+    result = []
+    for seller in Seller.objects.all().order_by('id'):
+        total_comission = 0
+        total_items = 0
+        for sell in Sell.objects.filter(seller=seller, date__range=[start_date, end_date]):
+            total_comission += sell.total_commission
+            total_items += sell.total_items
+        result_dict = {
+            "id": str(seller.id).zfill(3),
+            "name": seller.name,
+            "total_items": total_items,
+            "total_commission": total_comission
+        }
+        result.append(result_dict)
+    return result

@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User, Group
 from store.models import Sell, Client, Seller, Product
 from rest_framework import viewsets, status
-from rest_framework.response import Response
 from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, SalesSerializer, ClientSerializer, SellerSerializer, SellSerializer, ProductSerializer
-
-from .services import create_products_for_sell
+from .services import create_products_for_sell, group_by
+from rest_framework.response import Response
+from django.http import JsonResponse
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -81,3 +81,11 @@ class SalesViewSet(viewsets.ModelViewSet):
     serializer_class = SalesSerializer
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get']
+
+
+class CommissionViewSet(viewsets.ViewSet):
+    def list(self, request):
+        start_date = request.query_params.get("start-date")
+        end_date = request.query_params.get("end-date")
+        result = group_by(start_date, end_date)
+        return JsonResponse(result, safe=False, status=status.HTTP_200_OK)

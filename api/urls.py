@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
-from .views import SalesViewSet, ClientViewSet, SellerViewSet, SellViewSet, ProductViewSet
+from .views import SalesViewSet, ClientViewSet, SellerViewSet, SellViewSet, ProductViewSet, CommissionViewSet
 
 router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet)
@@ -25,6 +25,7 @@ router.register(r'client', ClientViewSet)
 router.register(r'seller', SellerViewSet)
 router.register(r'sell', SellViewSet, basename='sell')
 router.register(r'sales', SalesViewSet, basename='sales')
+router.register(r'commission', CommissionViewSet, basename='commission')
 
 # Wire up our API using automatic URL routing.
 # Additionall`y, we include login URLs for the browsable API.
